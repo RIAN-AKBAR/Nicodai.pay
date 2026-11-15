@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memuat - Nicodai.pay</title>
+    <!-- Import Font Google -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Import FontAwesome untuk Ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-dark: #0a0a0a;
+            --bg-card: #1e122e;
+            --primary-purple: #8a2be2;
+            --primary-red: #e63946;
+            --text-white: #ffffff;
+            --text-muted: #b0b0b0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-white);
+            font-family: 'Poppins', sans-serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Efek Cahaya di Background */
+        .glow {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(138,43,226,0.3) 0%, rgba(10,10,10,0) 70%);
+            border-radius: 50%;
+            filter: blur(60px);
+            z-index: -1;
+        }
+        .glow-1 { top: -100px; left: -100px; }
+        .glow-2 { bottom: -100px; right: -100px; background: radial-gradient(circle, rgba(230,57,70,0.3) 0%, rgba(10,10,10,0) 70%); }
+
+        .container {
+            text-align: center;
+            padding: 40px;
+            background: rgba(30, 18, 46, 0.8); /* Glassmorphism */
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(138,43,226,0.3);
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(138,43,226,0.1);
+            max-width: 450px;
+            width: 90%;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Logo & Judul di Bagian Atas */
+        .brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--text-white);
+        }
+        .brand span { color: var(--primary-red); }
+        
+        /* Logo Kecil di Teks Atas */
+        .brand-logo-img {
+            height: 40px;
+            width: 40px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid var(--primary-purple);
+        }
+
+        /* Spinner Loading di Tengah */
+        .spinner-box {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 25px;
+        }
+        .spinner {
+            width: 100%;
+            height: 100%;
+            border: 5px solid rgba(138,43,226,0.2);
+            border-top: 5px solid var(--primary-purple);
+            border-right: 5px solid var(--primary-red);
+            border-radius: 50%;
+            animation: spin 1.2s linear infinite;
+        }
+        
+        /* Mengganti Ikon Server dengan Logo Anda */
+        .spinner-logo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 65px; /* Ukuran logo di tengah */
+            height: 65px;
+            object-fit: cover;
+            border-radius: 50%;
+            animation: pulse 1.5s ease-in-out infinite;
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes pulse { 0%, 100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(0.9); } }
+
+        /* Teks Loading */
+        h2 { font-size: 1.4rem; margin-bottom: 10px; font-weight: 600; color: #ffd700; }
+        p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; }
+
+        /* Progress Bar */
+        .progress-bar-container {
+            width: 100%;
+            height: 6px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 10px;
+            margin-top: 25px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary-purple), var(--primary-red));
+            border-radius: 10px;
+            transition: width 0.1s linear;
+        }
+
+        /* Tampilan Maintenance */
+        #maintenance-screen { display: none; }
+        .maintenance-icon { font-size: 5rem; color: var(--primary-red); margin-bottom: 20px; animation: pulse 2s infinite; }
+        .maintenance-text { color: var(--text-white); margin-bottom: 20px; font-weight: 500; }
+    </style>
+</head>
+<body>
+
+    <!-- Background Glow -->
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+
+    <!-- SCREEN 1: LOADING -->
+    <div class="container" id="loading-screen">
+        <!-- Logo & Nama Toko -->
+        <div class="brand">
+            <img src="https://files.catbox.moe/kbthhd.jpg" alt="Logo" class="brand-logo-img">
+            Nicodai<span>.pay</span>
+        </div>
+        
+        <!-- Animasi Spinner dengan Logo di Tengah -->
+        <div class="spinner-box">
+            <div class="spinner"></div>
+            <img src="https://files.catbox.moe/kbthhd.jpg" alt="Loading Logo" class="spinner-logo">
+        </div>
+
+        <h2 id="loading-title">Menyiapkan Server...</h2>
+        <p id="loading-text">Mohon tunggu sebentar, kami sedang mengarahkan Anda ke sistem utama.</p>
+
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+    </div>
+
+    <!-- SCREEN 2: MAINTENANCE (Tersembunyi secara default) -->
+    <div class="container" id="maintenance-screen">
+        <div class="brand">
+            <i class="fas fa-bolt"></i> Nicodai<span>.pay</span>
+        </div>
+        
+        <i class="fas fa-tools maintenance-icon"></i>
+        
+        <h2>Sedang Maintenance</h2>
+        <p class="maintenance-text" id="maintenance-msg">Kami sedang melakukan pemeliharaan server.</p>
+        
+        <p style="font-size: 0.8rem; margin-top: 20px;">
+            <i class="fas fa-sync-alt"></i> Silakan refresh halaman ini nanti.
+        </p>
+    </div>
+
+    <!-- Panggil File Konfigurasi -->
+    <script src="config.js"></script>
+
+    <!-- Logika JavaScript -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // 1. Cek Status Maintenance
+            if (portalConfig.isMaintenance) {
+                // Sembunyikan loading, tampilkan maintenance
+                document.getElementById('loading-screen').style.display = 'none';
+                document.getElementById('maintenance-screen').style.display = 'block';
+                document.getElementById('maintenance-msg').innerText = portalConfig.maintenanceMessage;
+                return; // Hentikan script di sini
+            }
+
+            // 2. Jika tidak maintenance, jalankan Loading
+            document.getElementById('loading-title').innerText = portalConfig.loadingTitle;
+            document.getElementById('loading-text').innerText = portalConfig.loadingText;
+
+            const progressBar = document.getElementById('progress-bar');
+            const duration = portalConfig.loadingDuration;
+            const intervalTime = 50; // Update setiap 50ms
+            const step = (intervalTime / duration) * 100;
+            
+            let currentProgress = 0;
+
+            // Animasi Progress Bar
+            const progressInterval = setInterval(() => {
+                currentProgress += step;
+                if (currentProgress >= 100) {
+                    currentProgress = 100;
+                    clearInterval(progressInterval);
+                    
+                    // Redirect ke Cloudflare Tunnel setelah 100%
+                    setTimeout(() => {
+                        window.location.href = portalConfig.targetUrl;
+                    }, 300);
+                }
+                progressBar.style.width = currentProgress + '%';
+            }, intervalTime);
+        });
+    </script>
+</body>
+</html>
