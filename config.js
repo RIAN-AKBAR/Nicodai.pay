@@ -5,7 +5,7 @@
 const portalConfig = {
     // 1. Link Cloudflare Tunnel (Ganti dengan link Anda)
     // Contoh: "https://abc-def-ghi.trycloudflare.com"
-    targetUrl: "https://concert-county-handmade-review.trycloudflare.com/Nicodai.pay", 
+    targetUrl: "https://association-dimensional-happened-digest.trycloudflare.com/Nicodai.pay", 
     
     // 2. Status Maintenance (true = Tutup, false = Buka)
     isMaintenance: false,
