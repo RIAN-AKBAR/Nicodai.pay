@@ -5,7 +5,7 @@
 const portalConfig = {
     // 1. Link Cloudflare Tunnel (Ganti dengan link Anda)
     // Contoh: "https://abc-def-ghi.trycloudflare.com"
-    targetUrl: "silverhold-hosting.web.id/Nicodai.pay", 
+    targetUrl: "https://silverhold-hosting.web.id/Nicodai.pay", 
     
     // 2. Status Maintenance (true = Tutup, false = Buka)
     isMaintenance: false,
